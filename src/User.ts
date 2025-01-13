@@ -1,5 +1,5 @@
 import { WebSocket } from "ws";
-import { UserManager } from "./UserManager";
+import { ChatManager } from "./ChatManager";
 
 export class User {
     constructor( private id: string, private ws: WebSocket){
@@ -14,13 +14,20 @@ export class User {
     }
     private addListners(){
         this.ws.on('message', (data: string) => {
-            const parsedData = JSON.parse(data as unknown as string);
-            if(parsedData.type === "SUBSCRIBE"){
-                UserManager.getInstance().addUserToChat(parsedData.chatId, this)
+            try{
+                const parsedData = JSON.parse(data);
+                if(parsedData.type === 'SUBSCRIBE'){
+                    const chatId = parsedData.chatId;
+                    ChatManager.getInstance().addUserToChat(chatId, this)
+                }
+                if(parsedData.type === 'sendMessage'){
+                    const { chatId, message} = parsedData;
+                    ChatManager.getInstance().sendMessageToChat(this.id, chatId, message);
+                }
+            }catch(error){
+                console.log(`Failed to process user messages:`, error);
             }
-            if(parsedData.type === "sendMessage"){
-                UserManager.getInstance().sendToChat(this.id, parsedData.chatId, parsedData.message);
-            }
-        })
+        
+        });
     }
 }

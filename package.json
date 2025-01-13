@@ -11,6 +11,7 @@
   "description": "",
   "dependencies": {
     "@types/ws": "^8.5.13",
+    "redis": "^4.7.0",
     "typecript": "^0.0.1-security",
     "ws": "^8.18.0"
   }
