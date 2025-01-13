@@ -21,7 +21,8 @@ export class User {
                     ChatManager.getInstance().addUserToChat(chatId, this)
                 }
                 if(parsedData.type === 'sendMessage'){
-                    const { chatId, message} = parsedData;
+                    console.log("inside send message");
+                    const { chatId, message } = parsedData;
                     ChatManager.getInstance().sendMessageToChat(this.id, chatId, message);
                 }
             }catch(error){

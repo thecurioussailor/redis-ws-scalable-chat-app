@@ -8,11 +8,11 @@ export class ChatManager {
     private publisher: RedisClientType
     private constructor(){
         this.subscriber = createClient({
-            url: "redis://default:localhost:6379"
+            url: "redis://localhost:6379"
         })
         this.subscriber.connect();
         this.publisher = createClient({
-            url: "redis://default:localhost:6379"
+            url: "redis://localhost:6379"
         })
         this.publisher.connect();
     }
@@ -40,7 +40,7 @@ export class ChatManager {
 
             if(chatUsers) {
                 for (const user of chatUsers){
-                    if(!user.getUserId() !== parsedData.senderId){
+                    if(user.getUserId() !== parsedData.senderId){
                         user.send(parsedData.message)
                     }
                 }
